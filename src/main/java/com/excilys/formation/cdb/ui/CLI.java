@@ -11,8 +11,8 @@ import com.excilys.formation.cdb.service.ComputerService;
 
 public class CLI {
 	
-	private ComputerService computerService = ComputerService.INSTANCE;
-	private CompanyService companyService = CompanyService.INSTANCE;
+	private ComputerService computerService = new ComputerService();
+	private CompanyService companyService = new CompanyService();
 	
 	Scanner scCommande = new Scanner(System.in);
 	Scanner sc = new Scanner(System.in);
@@ -21,7 +21,7 @@ public class CLI {
 	public CLI(){
 		
 		  System.out.println("Saisir commande : ");
-			 int numcomputer = ComputerService.INSTANCE.countComputers();
+			 int numcomputer = computerService.countComputers();
 	
 		  String str = "";
 		  switch (str) {
@@ -55,7 +55,7 @@ public class CLI {
     	System.out.println("Recherche dans la base de donnée ... ");
  
 			try {
-				c =  ComputerService.INSTANCE.selectOneComputer(id);
+				c =  computerService.selectOneComputer(id);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
@@ -20,11 +22,20 @@ public class AddComputerServlet extends HttpServlet {
  
 
 	private static final long serialVersionUID = 1L;
+	
+    @Autowired
+    private CompanyService companyService  = new CompanyService();
+    
+    @Autowired
+    private ComputerService computerService  = new ComputerService();
+
+
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-        request.setAttribute("companyList", CompanyService.INSTANCE.selectListCompany());
+        request.setAttribute("companyList", companyService.selectListCompany());
 	    RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/view/addComputer.jsp");
         requestDispatcher.forward(request, response);
     }
@@ -40,7 +51,7 @@ public class AddComputerServlet extends HttpServlet {
          
          int companyId = Integer.parseInt(strCompanyId);
          try {
-			company = CompanyService.INSTANCE.getCompany(companyId);
+			company = companyService.getCompany(companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,7 +61,7 @@ public class AddComputerServlet extends HttpServlet {
 
    
          try {
-			ComputerService.INSTANCE.createComputer(new Computer.ComputerBuilder(name)
+			computerService.createComputer(new Computer.ComputerBuilder(name)
 			         .dateIntroduced(introduced)
 			         .dateDiscontinued(discontinued)
 			         .manufactor(company)

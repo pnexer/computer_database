@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 
-
-public enum CompanyDAO {
-    INSTANCE;
+@Repository
+public class CompanyDAO {
+   
 
     private String selectListRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca";
     private String countRequest = "SELECT count(id) FROM company;";

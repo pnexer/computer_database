@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
@@ -22,21 +23,27 @@ import com.excilys.formation.cdb.service.ComputerService;
 
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
+	
+    @Autowired
+    private CompanyService companyService  = new CompanyService();
+    
+    @Autowired
+    private ComputerService computerService = new ComputerService();
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         
-        // int computerId = Integer.parseInt(request.getParameter("id"));
          ComputerDTO computerDTO = null;
 		try {
-			computerDTO = ComputerMapper.INSTANCE.computerToComputerDTO(ComputerService.INSTANCE.selectOneComputer(1));
+			computerDTO = ComputerMapper.INSTANCE.computerToComputerDTO(computerService.selectOneComputer(1));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
          request.setAttribute("computer", computerDTO);
-         request.setAttribute("companyList", CompanyService.INSTANCE.selectListCompany());
+         request.setAttribute("companyList", companyService.selectListCompany());
           RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/view/editComputer.jsp");
          requestDispatcher.forward(request, response);
     }
@@ -53,7 +60,7 @@ public class EditComputerServlet extends HttpServlet {
         
         int companyId = Integer.parseInt(strCompanyId);
         try {
-			company = CompanyService.INSTANCE.getCompany(companyId);
+			company = companyService.getCompany(companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,7 +70,7 @@ public class EditComputerServlet extends HttpServlet {
 
   
         try {
-			ComputerService.INSTANCE.updateComputer(new Computer.ComputerBuilder(name)
+			computerService.updateComputer(new Computer.ComputerBuilder(name)
 			         .dateIntroduced(introduced)
 			         .dateDiscontinued(discontinued)
 			         .manufactor(company)

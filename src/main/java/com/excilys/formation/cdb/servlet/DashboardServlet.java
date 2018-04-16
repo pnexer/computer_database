@@ -10,6 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
@@ -20,6 +23,9 @@ import com.excilys.formation.cdb.service.ComputerService;
 public class DashboardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 2741128895945909738L;
+    
+    @Autowired
+    private ComputerService computerService = new ComputerService();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
@@ -36,7 +42,7 @@ public class DashboardServlet extends HttpServlet {
           }    	
  	 
          page.getContent().forEach(computer -> computersDTO.add(ComputerMapper.INSTANCE.computerToComputerDTO(computer)));
-     	 int nbComputer = ComputerService.INSTANCE.countComputers();   
+     	 int nbComputer = computerService.countComputers();   
          request.setAttribute("nbComputers", nbComputer);
          request.setAttribute("computerlist", computersDTO);
          RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/view/dashboard.jsp");

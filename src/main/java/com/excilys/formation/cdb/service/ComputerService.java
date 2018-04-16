@@ -2,18 +2,23 @@ package com.excilys.formation.cdb.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.persistence.ComputerDAO;
 
-public enum ComputerService {
-    INSTANCE;
+@Service
+public class ComputerService {
+  
+	private ComputerDAO computerDAO = new ComputerDAO();
+
 
     public List<Computer> subListComputer(int offset, int numberToDisplay) {
-        return ComputerDAO.INSTANCE.subList(offset, numberToDisplay);
+        return computerDAO.subList(offset, numberToDisplay);
     }
 
     public int countComputers() {
-        return ComputerDAO.INSTANCE.countAllComputer();
+        return computerDAO.countAllComputer();
     }
 
     public Computer selectOneComputer(int id) throws Exception {
@@ -26,7 +31,7 @@ public enum ComputerService {
             Validator.INSTANCE.companyExistValidation(computer.getManufactor().get().getId());
         }
         
-        ComputerDAO.INSTANCE.createComputer(computer);
+        computerDAO.createComputer(computer);
 
     }
 
@@ -38,13 +43,13 @@ public enum ComputerService {
             Validator.INSTANCE.companyExistValidation(computer.getManufactor().get().getId());
         }
         
-        ComputerDAO.INSTANCE.updateComputer(computer);
+        computerDAO.updateComputer(computer);
 
     }
 
     public void deleteComputer(int id) throws Exception {
     	
         Validator.INSTANCE.computerExistValidation(id);       
-        ComputerDAO.INSTANCE.deleteComputer(id);
+        computerDAO.deleteComputer(id);
     }
 }

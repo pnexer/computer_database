@@ -9,16 +9,15 @@ import com.excilys.formation.cdb.persistence.ComputerDAO;
 
 public enum Validator {
     INSTANCE;
-
-
-
-
+	
+	private CompanyDAO companyDAO ;
+	private ComputerDAO computerDAO;
 
     protected Computer computerExistValidation(int id) throws Exception {
     	
-        if (ComputerDAO.INSTANCE.selectComputer(id).isPresent()) {
+        if (computerDAO.selectComputer(id).isPresent()) {
         	
-            return ComputerDAO.INSTANCE.selectComputer(id).get();
+            return computerDAO.selectComputer(id).get();
         } else {
             throw new Exception("No Computer");
         }
@@ -26,8 +25,8 @@ public enum Validator {
 
     protected Company companyExistValidation(int id) throws Exception {
     	
-        if (CompanyDAO.INSTANCE.selectCompany(id).isPresent()) {
-            return CompanyDAO.INSTANCE.selectCompany(id).get();
+        if (companyDAO.selectCompany(id).isPresent()) {
+            return companyDAO.selectCompany(id).get();
         } else {
             throw new Exception("No Company");
         }

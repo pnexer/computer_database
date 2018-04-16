@@ -12,12 +12,14 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 
-public enum ComputerDAO {
-    INSTANCE;
+@Repository
+public class ComputerDAO {
+
 
     private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
    

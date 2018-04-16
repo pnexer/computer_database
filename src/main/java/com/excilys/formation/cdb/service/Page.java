@@ -4,6 +4,8 @@ import java.util.List;
 
 public abstract class Page<T> {
 	
+    protected ComputerService computerService;
+
     private int size;
     private int currentPageIndex;
     protected int lastPageIndex;
