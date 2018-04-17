@@ -13,8 +13,8 @@ public class ComputerService {
 	private ComputerDAO computerDAO = new ComputerDAO();
 
 
-    public List<Computer> subListComputer(int offset, int numberToDisplay) {
-        return computerDAO.subList(offset, numberToDisplay);
+    public List<Computer> subListComputer(int offset, int numberToDisplay,String keyword) {
+        return computerDAO.subList(offset, numberToDisplay,keyword);
     }
 
     public int countComputers() {

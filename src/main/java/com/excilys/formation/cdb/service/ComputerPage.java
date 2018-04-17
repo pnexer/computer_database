@@ -24,6 +24,6 @@ public class ComputerPage extends Page<Computer> {
 
     @Override
     public void setContent(int offset) {
-        this.content = computerService.subListComputer(this.getOffset(), this.getSize());
+        this.content = computerService.subListComputer(this.getOffset(), this.getSize(),super.getKeywords());
     }
 }

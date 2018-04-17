@@ -8,14 +8,40 @@ public abstract class Page<T> {
     private int size;
     private int currentPageIndex;
     protected int lastPageIndex;
+    protected String keywords;
     protected List<T> content = null;
 
     public Page(int size) {
         this.currentPageIndex = 0;
         this.size = size;
+        this.keywords = "";
+
     }
 
-    public int getCurrentPageIndex() {
+    public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+	    this.currentPageIndex = 0; 
+		this.keywords = keywords;
+	    this.setContent(this.getOffset());
+	    this.setLastPageIndex();
+	}
+
+	public void setCurrentPageIndex(int currentPageIndex) {
+		this.currentPageIndex = currentPageIndex;
+	}
+
+	public void setLastPageIndex(int lastPageIndex) {
+		this.lastPageIndex = lastPageIndex;
+	}
+
+	public void setContent(List<T> content) {
+		this.content = content;
+	}
+
+	public int getCurrentPageIndex() {
         return currentPageIndex;
     }
 
@@ -23,10 +49,10 @@ public abstract class Page<T> {
         return size;
     }
     public void setSize(int size) {
+        this.currentPageIndex = 0;
         this.size = size;
         this.setContent(this.getOffset());
         this.setLastPageIndex();
-        this.currentPageIndex = 0;
     }
     
     public int getOffset() {

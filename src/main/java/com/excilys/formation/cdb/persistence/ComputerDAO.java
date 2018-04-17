@@ -130,13 +130,29 @@ public class ComputerDAO {
         return Optional.ofNullable(computer);
     }
 
-    public List<Computer> subList(int offset, int limit) {
+    public List<Computer> subList(int offset, int limit,String keyword) {
         List<Computer> listComputer = new ArrayList<>();
+        int indice = 0;        
+        String addKeywordRequest;
+        
+        if(keyword.length() > 0) {
+        	addKeywordRequest =  " WHERE (cu.name LIKE ?) ";
+        } else {
+        	addKeywordRequest = "WHERE (cu.name LIKE ?)";
+        }
+        
+        String selectListRequestNew = selectListRequest + addKeywordRequest;
+        
+        
+
+        
         try (Connection conn = ConnexionManager.INSTANCE.getConn();
-        	 PreparedStatement preparedStatement = conn.prepareStatement(selectListRequest + " LIMIT ? OFFSET ?;");	) {
-            
-            preparedStatement.setInt(1, limit);
-            preparedStatement.setInt(2, offset);
+        	 PreparedStatement preparedStatement = conn.prepareStatement(selectListRequestNew + " LIMIT ? OFFSET ?;");	) 
+        {    if(indice > 0) {       	
+             preparedStatement.setString(1,"%" + keyword + "%");  	
+             }
+             preparedStatement.setInt(2 + indice, limit);
+             preparedStatement.setInt(3 + indice, offset);
             ResultSet res = preparedStatement.executeQuery();
             
             while (res.next()) {

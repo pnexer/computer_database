@@ -40,6 +40,10 @@ public class DashboardServlet extends HttpServlet {
               } catch (NumberFormatException e1) {
               }
           }    	
+    	
+    	  if (!(request.getParameter("search") == null)) {
+              page.setKeywords(request.getParameter("search"));
+          }
  	 
          page.getContent().forEach(computer -> computersDTO.add(ComputerMapper.INSTANCE.computerToComputerDTO(computer)));
      	 int nbComputer = computerService.countComputers();   
