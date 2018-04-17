@@ -4,7 +4,6 @@ import java.util.List;
 
 public abstract class Page<T> {
 	
-    protected ComputerService computerService;
 
     private int size;
     private int currentPageIndex;
@@ -14,8 +13,6 @@ public abstract class Page<T> {
     public Page(int size) {
         this.currentPageIndex = 0;
         this.size = size;
-        this.setLastPageIndex();
-        this.setContent(this.getOffset());
     }
 
     public int getCurrentPageIndex() {

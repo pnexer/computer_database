@@ -29,8 +29,8 @@ public class DashboardServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        ComputerPage page = null;
-        page = new ComputerPage(10);
+        ComputerPage page = new ComputerPage(10,computerService);
+
     	List<ComputerDTO> computersDTO = new ArrayList<>();    	
       	
     	if (!(request.getParameter("index") == null)) {
