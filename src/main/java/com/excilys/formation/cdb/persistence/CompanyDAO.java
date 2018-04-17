@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
@@ -16,6 +17,9 @@ import com.excilys.formation.cdb.model.Company;
 
 @Repository
 public class CompanyDAO {
+	
+	@Autowired
+	private CompanyMapper companyMapper = new CompanyMapper();
    
 
     private String selectListRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca";
@@ -47,7 +51,7 @@ public class CompanyDAO {
              ResultSet result = statement.executeQuery(selectListRequest + " ;");) {
 
             while (result.next()) {
-                companyList.add(CompanyMapper.INSTANCE.resultSetToCompany(result));
+                companyList.add(companyMapper.resultSetToCompany(result));
             }
         } catch (SQLException e) {
         }
@@ -67,7 +71,7 @@ public class CompanyDAO {
             result = preparedStatement.executeQuery();
             
             if (result.next()) {
-                company = CompanyMapper.INSTANCE.resultSetToCompany(result);
+                company = companyMapper.resultSetToCompany(result);
             }
             
         } catch
@@ -87,7 +91,7 @@ public class CompanyDAO {
             ResultSet res = preparedStatement.executeQuery();
             while (res.next()) {
             	
-                computerList.add(CompanyMapper.INSTANCE.resultSetToCompany(res));
+                computerList.add(companyMapper.resultSetToCompany(res));
             }
         } catch (SQLException e) {
         }

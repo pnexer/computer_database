@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import com.excilys.formation.cdb.dto.ComputerDTO;
+import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
@@ -22,6 +24,7 @@ import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
 @WebServlet("/editComputer")
+@Controller
 public class EditComputerServlet extends HttpServlet {
 	
     @Autowired
@@ -29,6 +32,9 @@ public class EditComputerServlet extends HttpServlet {
     
     @Autowired
     private ComputerService computerService = new ComputerService();
+    
+	@Autowired
+	private ComputerMapper computerMapper;
 
 
 
@@ -38,7 +44,7 @@ public class EditComputerServlet extends HttpServlet {
         
          ComputerDTO computerDTO = null;
 		try {
-			computerDTO = ComputerMapper.INSTANCE.computerToComputerDTO(computerService.selectOneComputer(1));
+			computerDTO = computerMapper.computerToComputerDTO(computerService.selectOneComputer(1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

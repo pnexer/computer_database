@@ -6,16 +6,21 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.formation.cdb.dto.ComputerDTO;
 import com.excilys.formation.cdb.model.Company;
 import com.excilys.formation.cdb.model.Computer;
 
-
-public enum ComputerMapper {
-    INSTANCE;
+@Component
+public class ComputerMapper {
+	
+	@Autowired
+	private  CompanyMapper companyMapper = new CompanyMapper();
 
     public Computer resultSetToComputer(ResultSet resultSet) throws SQLException {
-        
+ 	
     	int id = resultSet.getInt("cuId");
         String name = resultSet.getString("cuName");
         Date DateIntro = resultSet.getDate("introduced");
@@ -24,7 +29,7 @@ public enum ComputerMapper {
         LocalDate introducedComputer = DateIntro == null ? null : resultSet.getDate("introduced").toLocalDate();
         LocalDate discontinuedComputer = DateDisco == null ? null : resultSet.getDate("discontinued").toLocalDate();
         
-        Company manufactor = CompanyMapper.INSTANCE.resultSetToCompany(resultSet);
+        Company manufactor = companyMapper.resultSetToCompany(resultSet);
       
         return new Computer.ComputerBuilder(name)
                             .id(id)

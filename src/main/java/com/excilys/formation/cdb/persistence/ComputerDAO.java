@@ -12,14 +12,18 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.mapper.ComputerMapper;
 import com.excilys.formation.cdb.model.Computer;
 
 @Repository
 public class ComputerDAO {
 
+	@Autowired
+	private ComputerMapper computerMapper = new ComputerMapper();
 
     private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
    
@@ -54,7 +58,7 @@ public class ComputerDAO {
         	 ResultSet res = statement.executeQuery(selectListRequest + " ;");) {
            
             while (res.next()) {
-                computerList.add(ComputerMapper.INSTANCE.resultSetToComputer(res));
+                computerList.add(computerMapper.resultSetToComputer(res));
             }
             
         } catch (SQLException e) {
@@ -121,7 +125,7 @@ public class ComputerDAO {
             res = preparedStatement.executeQuery();
             
             if (res.next()) {
-                computer = ComputerMapper.INSTANCE.resultSetToComputer(res);
+                computer = computerMapper.resultSetToComputer(res);
             }
             
         } catch (SQLException e) {
@@ -141,22 +145,22 @@ public class ComputerDAO {
         	addKeywordRequest = "WHERE (cu.name LIKE ?)";
         }
         
-        String selectListRequestNew = selectListRequest + addKeywordRequest;
+        //String selectListRequestNew = selectListRequest + addKeywordRequest;
         
         
 
         
         try (Connection conn = ConnexionManager.INSTANCE.getConn();
-        	 PreparedStatement preparedStatement = conn.prepareStatement(selectListRequestNew + " LIMIT ? OFFSET ?;");	) 
+        	 PreparedStatement preparedStatement = conn.prepareStatement(selectListRequest + " LIMIT ? OFFSET ?;");	) 
         {    if(indice > 0) {       	
              preparedStatement.setString(1,"%" + keyword + "%");  	
              }
-             preparedStatement.setInt(2 + indice, limit);
-             preparedStatement.setInt(3 + indice, offset);
+             preparedStatement.setInt(1 + indice, limit);
+             preparedStatement.setInt(2 + indice, offset);
             ResultSet res = preparedStatement.executeQuery();
             
             while (res.next()) {
-                listComputer.add(ComputerMapper.INSTANCE.resultSetToComputer(res));
+                listComputer.add(computerMapper.resultSetToComputer(res));
             }
             
         } catch (SQLException e) {
