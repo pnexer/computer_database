@@ -1,10 +1,13 @@
 package com.excilys.formation.cdb.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.model.Company;
 
 public class CompanyPage extends Page<Company> {
 	
-    private CompanyService companyService  = new CompanyService();
+	@Autowired
+    private CompanyService companyService;
 
 
     public CompanyPage(int size) {

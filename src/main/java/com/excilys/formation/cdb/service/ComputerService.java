@@ -12,7 +12,16 @@ import com.excilys.formation.cdb.persistence.ComputerDAO;
 public class ComputerService {
   
 	@Autowired
-	private ComputerDAO computerDAO = new ComputerDAO();
+	private ComputerDAO computerDAO;
+	
+	@Autowired
+	private Validator validator;
+	
+	 
+	public ComputerService(ComputerDAO computerDAO, Validator validator) {
+        this.computerDAO = computerDAO;
+        this.validator = validator;
+    }
 
 
     public List<Computer> subListComputer(int offset, int numberToDisplay,String keyword) {
@@ -24,13 +33,13 @@ public class ComputerService {
     }
 
     public Computer selectOneComputer(int id) throws Exception {
-        return Validator.INSTANCE.computerExistValidation(id);
+        return validator.computerExistValidation(id);
     }
 
     public void createComputer(Computer computer) throws Exception {
 
         if (computer.getManufactor().isPresent()) {
-            Validator.INSTANCE.companyExistValidation(computer.getManufactor().get().getId());
+            validator.companyExistValidation(computer.getManufactor().get().getId());
         }
         
         computerDAO.createComputer(computer);
@@ -39,10 +48,10 @@ public class ComputerService {
 
     public void updateComputer(Computer computer) throws Exception {
     	
-        Validator.INSTANCE.computerExistValidation(computer.getId());
+        validator.computerExistValidation(computer.getId());
 
         if (computer.getManufactor().isPresent()) {
-            Validator.INSTANCE.companyExistValidation(computer.getManufactor().get().getId());
+            validator.companyExistValidation(computer.getManufactor().get().getId());
         }
         
         computerDAO.updateComputer(computer);
@@ -51,7 +60,7 @@ public class ComputerService {
 
     public void deleteComputer(int id) throws Exception {
     	
-        Validator.INSTANCE.computerExistValidation(id);       
+        validator.computerExistValidation(id);       
         computerDAO.deleteComputer(id);
     }
 }

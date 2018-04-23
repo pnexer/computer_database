@@ -12,7 +12,14 @@ import com.excilys.formation.cdb.persistence.*;
 public class  CompanyService {
 	
 	@Autowired
-	private CompanyDAO companyDAO = new CompanyDAO();
+	private CompanyDAO companyDAO;
+	
+	@Autowired
+	private Validator validator;
+	
+    public CompanyService(CompanyDAO companyDAO) {
+        this.companyDAO = companyDAO;
+    }
 
 
     public List<Company> selectListCompany() {
@@ -22,7 +29,7 @@ public class  CompanyService {
         return companyDAO.countCompany();
     }
     public Company getCompany(int id) throws Exception {
-        return Validator.INSTANCE.companyExistValidation(id);
+        return validator.companyExistValidation(id);
     }
     
     public List<Company> selectSubListCompany(int offset, int numberToDisplay) {

@@ -11,8 +11,8 @@ import com.excilys.formation.cdb.service.ComputerService;
 
 public class CLI {
 	
-	private ComputerService computerService = new ComputerService();
-	private CompanyService companyService = new CompanyService();
+	private ComputerService computerService ;
+	private CompanyService companyService ;
 	
 	Scanner scCommande = new Scanner(System.in);
 	Scanner sc = new Scanner(System.in);

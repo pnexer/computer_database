@@ -7,6 +7,7 @@ import com.excilys.formation.cdb.model.Computer;
 
 public class ComputerPage extends Page<Computer> {
 
+	@Autowired
     private ComputerService computerService;
 
 	

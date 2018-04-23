@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.cdb.mapper.CompanyMapper;
@@ -18,83 +21,41 @@ import com.excilys.formation.cdb.model.Company;
 @Repository
 public class CompanyDAO {
 	
-	@Autowired
-	private CompanyMapper companyMapper = new CompanyMapper();
+	
+	private CompanyMapper companyMapper;	
+	private JdbcTemplate jdbcTemplate;
+	
+	 @Autowired
+     public CompanyDAO(DataSource dataSource, CompanyMapper companyMapper) {
+	     this.jdbcTemplate = new JdbcTemplate(dataSource);
+	     this.companyMapper = companyMapper;
+	 }
    
-
     private String selectListRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca";
     private String countRequest = "SELECT count(id) FROM company;";
+    private String selectSublistRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca LIMIT ? OFFSET ?;";
+    private String selectCompanyByIdRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca WHERE ca.id = ?;";
 
     public int countCompany() {
-    	int r = -1;
-    	
-        try (Connection connection = ConnexionManager.INSTANCE.getConn();
-             Statement statement = connection.createStatement();
-             ResultSet res = statement.executeQuery(countRequest);) {
-           
-            res.next();
-            r = res.getInt(1);
-            return r;
-            
-        } catch (SQLException e) {
-        }
-        
-        return r;
+    	int res = this.jdbcTemplate.queryForObject(countRequest, Integer.class);
+    	return res;
     }
 
     public List<Company> list() {
-    	
-        List<Company> companyList = new ArrayList<>();
-        
-        try (Connection connection = ConnexionManager.INSTANCE.getConn();
-             Statement statement = connection.createStatement();
-             ResultSet result = statement.executeQuery(selectListRequest + " ;");) {
-
-            while (result.next()) {
-                companyList.add(companyMapper.resultSetToCompany(result));
-            }
-        } catch (SQLException e) {
-        }
-        
-        return companyList;
+    	List<Company> res = this.jdbcTemplate.query(selectListRequest, (resultSet, row) -> companyMapper.resultSetToCompany(resultSet));	    
+    	return res;
+    	    
     }
 
     public Optional<Company> selectCompany(int id) {
     	
-        Company company = null;
-        ResultSet result;
-
-        try (Connection connection = ConnexionManager.INSTANCE.getConn();
-        	 PreparedStatement preparedStatement = connection.prepareStatement(selectListRequest + " WHERE ca.id = ?;");) {
-        	           
-            preparedStatement.setInt(1, id);
-            result = preparedStatement.executeQuery();
-            
-            if (result.next()) {
-                company = companyMapper.resultSetToCompany(result);
-            }
-            
-        } catch
-        (SQLException e) {
-        }
+        Company company; 
+        company = this.jdbcTemplate.query(selectCompanyByIdRequest, (ResultSet resultSet, int row) -> companyMapper.resultSetToCompany(resultSet), id).get(0); 
         return Optional.ofNullable(company);
     }
     
     public List<Company> subList(int offset, int limit) {
-        List<Company> computerList = new ArrayList<>();
-        try (Connection conn = ConnexionManager.INSTANCE.getConn();
-             PreparedStatement preparedStatement = conn.prepareStatement(selectListRequest + " LIMIT ? OFFSET ?;");) {
-            
-            preparedStatement.setInt(1, limit);
-            preparedStatement.setInt(2, offset);
-            
-            ResultSet res = preparedStatement.executeQuery();
-            while (res.next()) {
-            	
-                computerList.add(companyMapper.resultSetToCompany(res));
-            }
-        } catch (SQLException e) {
-        }
-        return computerList;
+    	List<Company> res = this.jdbcTemplate.queryForList(selectSublistRequest, new Object[] {limit, offset}, Company.class);
+    	return res;
     }
 }
