@@ -8,6 +8,8 @@ public class ComputerDTO {
     private String dateDiscontinued;
     private int manufactorId;
     private String manufactorName;
+    
+    public ComputerDTO() { };
 
     private ComputerDTO(ComputerDTOBuilder builder) {
         this.id = builder.id;
