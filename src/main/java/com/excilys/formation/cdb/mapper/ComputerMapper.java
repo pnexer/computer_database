@@ -24,11 +24,9 @@ public class ComputerMapper {
     	int id = resultSet.getInt("cuId");
         String name = resultSet.getString("cuName");
         Date DateIntro = resultSet.getDate("introduced");
-        Date DateDisco = resultSet.getDate("discontinued");
-        
+        Date DateDisco = resultSet.getDate("discontinued");       
         LocalDate introducedComputer = DateIntro == null ? null : resultSet.getDate("introduced").toLocalDate();
-        LocalDate discontinuedComputer = DateDisco == null ? null : resultSet.getDate("discontinued").toLocalDate();
-        
+        LocalDate discontinuedComputer = DateDisco == null ? null : resultSet.getDate("discontinued").toLocalDate();     
         Company manufactor = companyMapper.resultSetToCompany(resultSet);
       
         return new Computer.ComputerBuilder(name)
@@ -46,8 +44,24 @@ public class ComputerMapper {
                                 .id(computer.getId())
                                 .dateIntroduced(optionalDateToString(computer.getDateIntroduced()))
                                 .dateDiscontinued(optionalDateToString(computer.getDateDiscontinued()))
-                                .manufactorName(optionalCompanyToString(computer.getManufactor()))
+                                .companyDTO(companyMapper.companyToCompanyDTO(computer.getManufactor()))
                                 .build();
+    }
+    
+    public Computer dtoToComputer(ComputerDTO computerDTO) {
+        return new Computer.ComputerBuilder(computerDTO.getName())
+                            .id(computerDTO.getId())
+                            .dateIntroduced(stringToLocalDate(computerDTO.getDateIntroduced()))
+                            .dateDiscontinued(stringToLocalDate(computerDTO.getDateDiscontinued()))
+                            .manufactor(companyMapper.dtoToCompany((computerDTO.getCompanyDTO())))
+                            .build();
+    }
+    
+  
+
+   
+    private LocalDate stringToLocalDate(String stringDate) {
+        return Optional.ofNullable(stringDate).isPresent() && !stringDate.isEmpty() ? LocalDate.parse(stringDate) : null;
     }
 
     private String optionalDateToString(Optional<LocalDate> date) {

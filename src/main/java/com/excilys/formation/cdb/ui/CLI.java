@@ -5,14 +5,17 @@ package com.excilys.formation.cdb.ui;
 
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.cdb.model.Computer;
 import com.excilys.formation.cdb.service.CompanyService;
 import com.excilys.formation.cdb.service.ComputerService;
 
 public class CLI {
 	
-	private ComputerService computerService ;
-	private CompanyService companyService ;
+	@Autowired
+	private ComputerService computerService;
+	private CompanyService companyService;
 	
 	Scanner scCommande = new Scanner(System.in);
 	Scanner sc = new Scanner(System.in);

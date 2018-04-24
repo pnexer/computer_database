@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.controler;
+ package com.excilys.formation.cdb.controler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +43,10 @@ public class GlobalController {
         page.getContent().forEach(computer -> computerDTOList.add(computerMapper.computerToComputerDTO(computer)));
         modelAndView.addObject("nbComputers", nbComputer);
         modelAndView.addObject("computerlist", computerDTOList);
+        modelAndView.addObject("size", page.getSize());
         modelAndView.addObject("keywords", page.getKeywords());
         modelAndView.addObject("maxIndex", page.getLastPageIndex() + 1);
         modelAndView.addObject("currentIndex", page.getCurrentPageIndex() + 1);
-        modelAndView.addObject("size", page.getSize());
         return modelAndView;
     }
 
@@ -72,18 +72,17 @@ public class GlobalController {
     
     @GetMapping("/edit")
     public ModelAndView doGetEditComputer(@RequestParam(value = "id") int id) {
-        ModelAndView modelAndView = new ModelAndView();
+    	 
+    	ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("companyList", companyService.selectListCompany());
-        
-            ComputerDTO computerDTO = null;
-			try {  ModelAndView modelAndView = new ModelAndView();
-	        return modelAndVie
-				computerDTO = computerMapper.computerToComputerDTO(computerService.selectOneComputer(id));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-            modelAndView.addObject("computer", computerDTO);
-     
+        ComputerDTO computerDTO = null;
+		try {
+			computerDTO = computerMapper.computerToComputerDTO(computerService.selectOneComputer(id));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        modelAndView.addObject("computer", computerDTO);
+      
         return modelAndView;
     }
 

@@ -1,13 +1,14 @@
 package com.excilys.formation.cdb.dto;
 
+import com.excilys.formation.cdb.dto.ComputerDTO.ComputerDTOBuilder;
 
 public class ComputerDTO {
     private int id;
     private String name;
     private String dateIntroduced;
     private String dateDiscontinued;
-    private int manufactorId;
-    private String manufactorName;
+    private CompanyDTO companyDTO;
+
     
     public ComputerDTO() { };
 
@@ -16,8 +17,9 @@ public class ComputerDTO {
         this.name = builder.name;
         this.dateIntroduced = builder.dateIntroduced;
         this.dateDiscontinued = builder.dateDiscontinued;
-        this.manufactorId = builder.manufactorId;
-        this.manufactorName = builder.manufactorName;
+        this.companyDTO = builder.companyDTO;
+
+
     }
     
     @Override
@@ -27,7 +29,7 @@ public class ComputerDTO {
         res += " | nom: " + this.name;
         res += " | dateIntro: " + this.dateIntroduced;
         res += " | dateDisco: " + this.dateDiscontinued;
-        res += " | manufactor: " + this.manufactorName + "}";
+        res += " | manufactor: " + this.companyDTO + "}";
         return res;
     }
 
@@ -64,30 +66,24 @@ public class ComputerDTO {
         this.dateDiscontinued = dateDiscontinued;
     }
 
-    public int getManufactorId() {
-        return manufactorId;
-    }
+    public CompanyDTO getCompanyDTO() {
+		return companyDTO;
+	}
 
-    public void setManufactorId(int manufactorId) {
-        this.manufactorId = manufactorId;
-    }
-
-    public String getManufactorName() {
-        return manufactorName;
-    }
-
-    public void setManufactorName(String manufactorName) {
-        this.manufactorName = manufactorName;
-    }
+	public void setCompanyDTO(CompanyDTO companyDTO) {
+		this.companyDTO = companyDTO;
+	}
 
 
-    public static class ComputerDTOBuilder {
+
+	public static class ComputerDTOBuilder {
         private int id;
         private final String name;
         private String dateIntroduced;
         private String dateDiscontinued;
-        private int manufactorId;
-        private String manufactorName;
+        private CompanyDTO companyDTO;
+
+    
 
         public ComputerDTOBuilder(String name) {
             this.name = name;
@@ -108,13 +104,8 @@ public class ComputerDTO {
             return this;
         }
 
-        public ComputerDTOBuilder manufactorId(int manufactorId) {
-            this.manufactorId = manufactorId;
-            return this;
-        }
-
-        public ComputerDTOBuilder manufactorName(String manufactorName) {
-            this.manufactorName = manufactorName;
+        public ComputerDTOBuilder companyDTO(CompanyDTO companyDTO) {
+            this.companyDTO = companyDTO;
             return this;
         }
 
