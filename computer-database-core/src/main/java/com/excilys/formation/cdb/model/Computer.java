@@ -5,6 +5,8 @@ import java.util.Optional;
 
 public class Computer {
   
+	
+	
 	private int id;
     private String name;
     private LocalDate dateIntroduced;
@@ -63,10 +65,10 @@ public class Computer {
     public String toString() {
         String res = " ";
         res += "id= " + this.id;
-        res += "| name= " + this.name;
-        res += "| dateIntro= " + this.dateIntroduced;
-        res += "| dateDisco= " + this.dateDiscontinued;
-        res += "| manufactor= " + this.manufactor.getName();
+        res += " | name= " + this.name;
+        res += " | dateIntro= " + this.dateIntroduced;
+        res += " | dateDisco= " + this.dateDiscontinued;
+        res += " | manufactor= " + this.manufactor.getName();
         return res;
     }
 

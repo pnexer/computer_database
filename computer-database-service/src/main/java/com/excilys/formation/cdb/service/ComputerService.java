@@ -11,7 +11,6 @@ import com.excilys.formation.cdb.persistence.ComputerDAO;
 @Service
 public class ComputerService {
   
-	
 	private ComputerDAO computerDAO;
 	private Validator validator;
 	
@@ -20,7 +19,11 @@ public class ComputerService {
         this.computerDAO = computerDAO;
         this.validator = validator;
     }
-
+	
+	
+	public ComputerService() {
+    
+    }
 
     public List<Computer> subListComputer(int offset, int numberToDisplay,String keyword) {
         return computerDAO.subList(offset, numberToDisplay,keyword);
