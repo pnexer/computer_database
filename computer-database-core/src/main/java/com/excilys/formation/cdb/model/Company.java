@@ -1,7 +1,8 @@
 package com.excilys.formation.cdb.model;
 
 
-@Entity
+
+
 public class Company {
 
     private int id;
