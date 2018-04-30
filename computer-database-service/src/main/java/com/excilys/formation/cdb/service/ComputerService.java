@@ -47,7 +47,7 @@ public class ComputerService {
 
     }
 
-    public void updateComputer(Computer computer) throws Exception {
+    public void updateComputer(Computer computer,int id ) throws Exception {
     	
         validator.computerExistValidation(computer.getId());
 
@@ -55,7 +55,7 @@ public class ComputerService {
             validator.companyExistValidation(computer.getManufactor().get().getId());
         }
         
-        computerDAO.updateComputer(computer);
+        computerDAO.updateComputer(computer,id);
 
     }
 

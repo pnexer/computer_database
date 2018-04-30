@@ -1,61 +1,68 @@
 package com.excilys.formation.cdb.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.sql.DataSource;
-
+import javax.persistence.TypedQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.excilys.formation.cdb.mapper.CompanyMapper;
 import com.excilys.formation.cdb.model.Company;
 
 @Repository
 public class CompanyDAO {
-	
-	
-	private CompanyMapper companyMapper;	
-	private JdbcTemplate jdbcTemplate;
-	
-	 @Autowired
-     public CompanyDAO(DataSource dataSource, CompanyMapper companyMapper) {
-	     this.jdbcTemplate = new JdbcTemplate(dataSource);
-	     this.companyMapper = companyMapper;
-	 }
-   
-    private String selectListRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca";
-    private String countRequest = "SELECT count(id) FROM company;";
-    private String selectSublistRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca LIMIT ? OFFSET ?;";
-    private String selectCompanyByIdRequest = "SELECT ca.id as caId, ca.name as caName FROM company ca WHERE ca.id = ?;";
 
-    public int countCompany() {
-    	int res = this.jdbcTemplate.queryForObject(countRequest, Integer.class);
-    	return res;
-    }
+	@Autowired
+	SessionFactory sessionFactory;
 
-    public List<Company> list() {
-    	List<Company> res = this.jdbcTemplate.query(selectListRequest, (resultSet, row) -> companyMapper.resultSetToCompany(resultSet));	    
-    	return res;
-    	    
-    }
+	private final String selectListRequest = "FROM " + Company.class.getName();
+	private final String countRequest =  "SELECT COUNT(*) FROM " + Company.class.getName();
+	private final String selectCompanyByIdRequest = "FROM " + Company.class.getName() + " company WHERE company.id = %d";
+	private final String selectCompanyByNameRequest = "SELECT company.id FROM " + Company.class.getName() + " company WHERE company.name LIKE \'%s\'";
 
-    public Optional<Company> selectCompany(int id) {
-    	
-        Company company; 
-        company = this.jdbcTemplate.query(selectCompanyByIdRequest, (ResultSet resultSet, int row) -> companyMapper.resultSetToCompany(resultSet), id).get(0); 
-        return Optional.ofNullable(company);
-    }
-    
-    public List<Company> subList(int offset, int limit) {
-    	List<Company> res = this.jdbcTemplate.queryForList(selectSublistRequest, new Object[] {limit, offset}, Company.class);
-    	return res;
-    }
+	public int countCompany() {
+		 try (Session session = sessionFactory.openSession();){
+	            Query<Long> querry = session.createQuery(countRequest,Long.class);
+	            return querry.uniqueResult().intValue();
+	}
+	}
+
+	public List<Company> list() {
+		try(Session session = sessionFactory.openSession();){
+			TypedQuery<Company> querry = session.createQuery(selectListRequest,Company.class);
+			return querry.getResultList();
+		}
+	}
+
+	public Optional<Company> selectCompany(int id) {
+		  try (Session session = sessionFactory.openSession();){
+	            TypedQuery<Company> querry = session.createQuery(String.format(selectCompanyByIdRequest,id), Company.class);
+	            List<Company> results = querry.getResultList();
+	            if (results == null) {
+	                return Optional.ofNullable(null);
+	            } else if (results.isEmpty()){
+	                return Optional.ofNullable(null);
+	            }else {
+	                return Optional.ofNullable(results.get(0));
+	            }
+	}
+	}
+
+	public List<Company> subList(int offset, int limit) {
+		try(Session session = sessionFactory.openSession();){
+            TypedQuery<Company> querry = session.createQuery(selectListRequest,Company.class);
+            querry.setFirstResult(offset);
+            querry.setMaxResults(limit);
+            return querry.getResultList();
+}
+	}
+
+	public List<Integer> getIdFromName(String name) {
+	        try (Session session = sessionFactory.openSession();){
+	            TypedQuery<Integer> querry = session.createQuery(selectCompanyByNameRequest,Integer.class);
+	            return querry.getResultList();
+	        }
+	}
+
 }
