@@ -7,10 +7,9 @@ import com.excilys.formation.cdb.model.Computer;
 
 public class ComputerPage extends Page<Computer> {
 
-	@Autowired
     private ComputerService computerService;
 
-	
+    @Autowired
     public ComputerPage(int size,ComputerService computerService) {
         super(size);
         this.computerService = computerService;
@@ -25,6 +24,6 @@ public class ComputerPage extends Page<Computer> {
 
     @Override
     public void setContent(int offset) {
-        this.content = computerService.subListComputer(this.getOffset(), this.getSize(),super.getKeywords());
+        this.content = computerService.subListComputer();
     }
 }

@@ -38,17 +38,17 @@ public class GlobalController {
             @RequestParam(value = "index", defaultValue = "1") int index){
        
         ModelAndView modelAndView = new ModelAndView();
-       // ComputerPage page = new ComputerPage(size,computerService);
-        
+        ComputerPage page = new ComputerPage(size,computerService);
+
         int nbComputer = computerService.countComputers();
         List<ComputerDTO> computerDTOList = new ArrayList<>();
-      //  page.getContent().forEach(computer -> computerDTOList.add(computerMapper.computerToComputerDTO(computer)));
+        page.getContent().forEach(computer -> computerDTOList.add(computerMapper.computerToComputerDTO(computer)));
         modelAndView.addObject("nbComputers", nbComputer);
         modelAndView.addObject("computerlist", computerDTOList);
-       // modelAndView.addObject("size", page.getSize());
-       // modelAndView.addObject("keywords", page.getKeywords());
-       // modelAndView.addObject("maxIndex", page.getLastPageIndex() + 1);
-       // modelAndView.addObject("currentIndex", page.getCurrentPageIndex() + 1);
+        modelAndView.addObject("size", page.getSize());
+        modelAndView.addObject("keywords", page.getKeywords());
+        modelAndView.addObject("maxIndex", page.getLastPageIndex() + 1);
+        modelAndView.addObject("currentIndex", page.getCurrentPageIndex() + 1);
         return modelAndView;
     }
 
@@ -73,7 +73,7 @@ public class GlobalController {
     }
     
     @GetMapping("/edit")
-    public ModelAndView doGetEditComputer(@RequestParam(value = "id") int id) {
+    public ModelAndView doGetEditComputer(@RequestParam(value = "id",defaultValue = "1") int id) {
     	 
     	ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("companyList", companyService.selectListCompany());

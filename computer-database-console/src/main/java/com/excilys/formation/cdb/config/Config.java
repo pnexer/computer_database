@@ -48,7 +48,7 @@ public class Config {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setAnnotatedClasses(Company.class);
-        sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
+        sessionFactory.setPackagesToScan("com.excilys.formation.cdb");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;

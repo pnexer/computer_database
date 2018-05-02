@@ -20,6 +20,7 @@ public class ComputerDAO {
 	private final String selectListRequest = "FROM" + Computer.class.getName();
 	private final String countRequest =  "SELECT COUNT(*) FROM " + Computer.class.getName();
 	private final String LIKE = " computer WHERE computer IN ((FROM computer WHERE computer.name LIKE \'%%%s%%\'),(FROM computer WHERE computer.company.name LIKE \'%%%s%%\'))";
+
 	public int countAllComputer() {  
 		try (Session session = sessionFactory.openSession();){
 			Query<Long> querry = session.createQuery(countRequest,Long.class);
@@ -33,6 +34,14 @@ public class ComputerDAO {
 			return querry.getResultList();
 		}
 	}
+
+	public List<Computer> sublist(int offset, int limit,String keyword) {
+		try (Session session = sessionFactory.openSession();){
+			TypedQuery<Computer> querry = session.createQuery(selectListRequest, Computer.class);
+			return querry.getResultList();
+		}
+	}
+
 
 	public int createComputer(Computer computer) {
 		try (Session session = sessionFactory.openSession();){
@@ -73,15 +82,5 @@ public class ComputerDAO {
 			}
 		}
 	}
-
-	public List<Computer> subList(int offset, int limit,String keyword) {
-		try (Session session = sessionFactory.openSession();){
-			TypedQuery<Computer> querry = session.createQuery(selectListRequest + String.format(LIKE, keyword, keyword), Computer.class);
-			querry.setMaxResults(limit);
-			querry.setFirstResult(offset);
-			return querry.getResultList();
-		}
-	}
-
 
 }

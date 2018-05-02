@@ -11,14 +11,13 @@ import com.excilys.formation.cdb.persistence.*;
 @Service
 public class  CompanyService {
 	
-	@Autowired
 	private CompanyDAO companyDAO;
-	
-	@Autowired
 	private Validator validator;
 	
-    public CompanyService(CompanyDAO companyDAO) {
+	@Autowired
+    public CompanyService(CompanyDAO companyDAO,Validator validator) {
         this.companyDAO = companyDAO;
+        this.validator = validator;
     }
 
 

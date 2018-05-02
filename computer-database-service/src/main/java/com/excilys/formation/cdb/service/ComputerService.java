@@ -10,58 +10,54 @@ import com.excilys.formation.cdb.persistence.ComputerDAO;
 
 @Service
 public class ComputerService {
-  
+
 	private ComputerDAO computerDAO;
 	private Validator validator;
-	
+
 	@Autowired
 	public ComputerService(ComputerDAO computerDAO, Validator validator) {
-        this.computerDAO = computerDAO;
-        this.validator = validator;
-    }
-	
-	
-	public ComputerService() {
-    
-    }
+		this.computerDAO = computerDAO;
+		this.validator = validator;
+	}
 
-    public List<Computer> subListComputer(int offset, int numberToDisplay,String keyword) {
-        return computerDAO.subList(offset, numberToDisplay,keyword);
-    }
+	public ComputerService() {  
+	}
 
-    public int countComputers() {
-        return computerDAO.countAllComputer();
-    }
+	public List<Computer> subListComputer() {
+		return computerDAO.listComputer();
+	}
 
-    public Computer selectOneComputer(int id) throws Exception {
-        return validator.computerExistValidation(id);
-    }
+	public int countComputers() {
+		return computerDAO.countAllComputer();
+	}
 
-    public void createComputer(Computer computer) throws Exception {
+	public Computer selectOneComputer(int id) throws Exception {
+		return validator.computerExistValidation(id);
+	}
 
-        if (computer.getManufactor().isPresent()) {
-            validator.companyExistValidation(computer.getManufactor().get().getId());
-        }
-        
-        computerDAO.createComputer(computer);
+	public void createComputer(Computer computer) throws Exception {
 
-    }
+		if (computer.getCompany().isPresent()) {
+			validator.companyExistValidation(computer.getCompany().get().getId());
+		}      
+		computerDAO.createComputer(computer);
+	}
 
-    public void updateComputer(Computer computer,int id ) throws Exception {
-    	
-        validator.computerExistValidation(computer.getId());
+	public void updateComputer(Computer computer,int id ) throws Exception {
 
-        if (computer.getManufactor().isPresent()) {
-            validator.companyExistValidation(computer.getManufactor().get().getId());
-        }
-        
-        computerDAO.updateComputer(computer,id);
+		validator.computerExistValidation(computer.getId());
 
-    }
+		if (computer.getCompany().isPresent()) {
+			validator.companyExistValidation(computer.getCompany().get().getId());
+		}
 
-    public void deleteComputer(int id) throws Exception {
-    	
-        validator.computerExistValidation(id);       
-        computerDAO.deleteComputer(id);
-    }
+		computerDAO.updateComputer(computer,id);
+
+	}
+
+	public void deleteComputer(int id) throws Exception {
+
+		validator.computerExistValidation(id);       
+		computerDAO.deleteComputer(id);
+	}
 }

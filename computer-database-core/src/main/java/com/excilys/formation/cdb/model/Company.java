@@ -8,37 +8,43 @@ public class Company {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-	
-    @Column(name = "name")
-    private String name;
+	private Integer id;
 
-    public Company(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+	@Column(name = "name")
+	private String name;
 
-    public int getId() {
-        return id;
-    }
+	public Company() {
+		super();
+		name = "";
+		id = null;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Company(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    @Override
-    public String toString() {
-        String res = "";
-        res += " id= " + this.id;
-        res += "| nom = " + this.name;
-        return res;
-    }
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		String res = "";
+		res += " id= " + this.id;
+		res += "| nom = " + this.name;
+		return res;
+	}
 }

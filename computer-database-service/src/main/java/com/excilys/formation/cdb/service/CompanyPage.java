@@ -6,12 +6,12 @@ import com.excilys.formation.cdb.model.Company;
 
 public class CompanyPage extends Page<Company> {
 	
-	@Autowired
     private CompanyService companyService;
 
-
-    public CompanyPage(int size) {
+	@Autowired
+    public CompanyPage(int size,CompanyService companyService) {
         super(size);
+        this.companyService = companyService;
     }
     
     @Override

@@ -30,7 +30,7 @@ public class CLI {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(Config.class);
 		context.refresh();
-		//context.getBean(CLI.class).start();
+		context.getBean(CLI.class).start();
 		context.close();	  
 	}
 

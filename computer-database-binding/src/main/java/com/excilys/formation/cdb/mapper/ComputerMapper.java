@@ -29,12 +29,8 @@ public class ComputerMapper {
         LocalDate discontinuedComputer = DateDisco == null ? null : resultSet.getDate("discontinued").toLocalDate();     
         Company manufactor = companyMapper.resultSetToCompany(resultSet);
       
-        return new Computer.ComputerBuilder(name)
-                            .id(id)
-                            .dateIntroduced(introducedComputer)
-                            .dateDiscontinued(discontinuedComputer)
-                            .manufactor(manufactor)
-                            .build();
+        return new Computer(id,name,introducedComputer,discontinuedComputer,manufactor);
+                          
     }
 
 
@@ -42,19 +38,15 @@ public class ComputerMapper {
     	
         return new ComputerDTO.ComputerDTOBuilder(computer.getName())
                                 .id(computer.getId())
-                                .dateIntroduced(optionalDateToString(computer.getDateIntroduced()))
-                                .dateDiscontinued(optionalDateToString(computer.getDateDiscontinued()))
-                                .companyDTO(companyMapper.companyToCompanyDTO(computer.getManufactor()))
+                                .dateIntroduced(optionalDateToString(computer.getIntroduced()))
+                                .dateDiscontinued(optionalDateToString(computer.getDiscontinued()))
+                                .companyDTO(companyMapper.companyToCompanyDTO(computer.getCompany()))
                                 .build();
     }
     
     public Computer dtoToComputer(ComputerDTO computerDTO) {
-        return new Computer.ComputerBuilder(computerDTO.getName())
-                            .id(computerDTO.getId())
-                            .dateIntroduced(stringToLocalDate(computerDTO.getDateIntroduced()))
-                            .dateDiscontinued(stringToLocalDate(computerDTO.getDateDiscontinued()))
-                            .manufactor(companyMapper.dtoToCompany((computerDTO.getCompanyDTO())))
-                            .build();
+        return new Computer(computerDTO.getId(),computerDTO.getName(),stringToLocalDate(computerDTO.getDateIntroduced()),stringToLocalDate(computerDTO.getDateDiscontinued()),companyMapper.dtoToCompany((computerDTO.getCompanyDTO())));
+                      
     }
     
   
