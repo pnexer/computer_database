@@ -18,13 +18,12 @@ public class ComputerDAO {
 	SessionFactory sessionFactory;
 
 	private final String selectListRequest = "FROM" + Computer.class.getName();
-	private final String countRequest = "SELECT count(id) FROM computer;";
+	private final String countRequest =  "SELECT COUNT(*) FROM " + Computer.class.getName();
 	private final String LIKE = " computer WHERE computer IN ((FROM computer WHERE computer.name LIKE \'%%%s%%\'),(FROM computer WHERE computer.company.name LIKE \'%%%s%%\'))";
-
 	public int countAllComputer() {  
 		try (Session session = sessionFactory.openSession();){
-			Query<Integer> querry = session.createQuery(countRequest,Integer.class);
-			return querry.uniqueResult();
+			Query<Long> querry = session.createQuery(countRequest,Long.class);
+			return querry.uniqueResult().intValue();
 		}
 	}
 

@@ -58,11 +58,6 @@ public class CompanyDAO {
 }
 	}
 
-	public List<Integer> getIdFromName(String name) {
-	        try (Session session = sessionFactory.openSession();){
-	            TypedQuery<Integer> querry = session.createQuery(selectCompanyByNameRequest,Integer.class);
-	            return querry.getResultList();
-	        }
-	}
+	
 
 }

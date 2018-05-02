@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +19,7 @@ import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.ComputerPage;
 
 @Controller
+@RequestMapping("/computer")
 public class GlobalController {
 	
 	private ComputerService computerService;
@@ -36,17 +38,17 @@ public class GlobalController {
             @RequestParam(value = "index", defaultValue = "1") int index){
        
         ModelAndView modelAndView = new ModelAndView();
-        ComputerPage page = new ComputerPage(size,computerService);
+       // ComputerPage page = new ComputerPage(size,computerService);
         
         int nbComputer = computerService.countComputers();
         List<ComputerDTO> computerDTOList = new ArrayList<>();
-        page.getContent().forEach(computer -> computerDTOList.add(computerMapper.computerToComputerDTO(computer)));
+      //  page.getContent().forEach(computer -> computerDTOList.add(computerMapper.computerToComputerDTO(computer)));
         modelAndView.addObject("nbComputers", nbComputer);
         modelAndView.addObject("computerlist", computerDTOList);
-        modelAndView.addObject("size", page.getSize());
-        modelAndView.addObject("keywords", page.getKeywords());
-        modelAndView.addObject("maxIndex", page.getLastPageIndex() + 1);
-        modelAndView.addObject("currentIndex", page.getCurrentPageIndex() + 1);
+       // modelAndView.addObject("size", page.getSize());
+       // modelAndView.addObject("keywords", page.getKeywords());
+       // modelAndView.addObject("maxIndex", page.getLastPageIndex() + 1);
+       // modelAndView.addObject("currentIndex", page.getCurrentPageIndex() + 1);
         return modelAndView;
     }
 

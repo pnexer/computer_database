@@ -7,8 +7,8 @@
 	<groupId>com.excilys.formation.cdb</groupId>
 	<artifactId>computer-database</artifactId>
 	<version>4.2.3-SNAPSHOT</version>
-	
-		<packaging>pom</packaging>
+
+	<packaging>pom</packaging>
 
 	<name>computer-database</name>
 	<url>https://github.com/pnexer/computer-database</url>
@@ -129,16 +129,17 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<modules>
 		<module>computer-database-persistence</module>
 		<module>computer-database-service</module>
 		<module>computer-database-binding</module>
 		<module>computer-database-console</module>
-		<module>computer-database-webApp</module>
 		<module>computer-database-core</module>
+		<module>computer-database-webapp</module>
+
 	</modules>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

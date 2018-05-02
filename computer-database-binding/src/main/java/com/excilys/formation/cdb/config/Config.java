@@ -19,13 +19,17 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
 @PropertySource(value = "classpath:db.properties")
-@ComponentScan(basePackages = "com.excilys.formation.cdb")
-public class Config implements WebMvcConfigurer{
+@ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.persistence",
+        "com.excilys.formation.cdb.service",
+        "com.excilys.formation.cdb.mapper",
+        "com.excilys.formation.cdb.ui",
+        "com.excilys.formation.cdb.config"
+})public class Config {
 
     @Resource
     private Environment environment;

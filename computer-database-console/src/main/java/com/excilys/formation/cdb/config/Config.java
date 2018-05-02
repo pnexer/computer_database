@@ -5,28 +5,22 @@ import java.util.Properties;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.excilys.formation.cdb.model.Company;
 
 @Configuration
-@EnableWebMvc
 @PropertySource(value = "classpath:db.properties")
 @ComponentScan(basePackages = "com.excilys.formation.cdb")
-
-public class WebConfiguration implements WebMvcConfigurer {
+public class Config {
 
     @Resource
     private Environment environment;
@@ -42,48 +36,32 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
     
     @Bean
-    public PlatformTransactionManager txManager() {
-        DataSourceTransactionManager txManager = new DataSourceTransactionManager();
-        txManager.setDataSource(dataSource());
-        return txManager;
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager transactionManager
+          = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
     }
     
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
+        sessionFactory.setAnnotatedClasses(Company.class);
         sessionFactory.setPackagesToScan("com.excilys.formation.cdb.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
-        
+
         return sessionFactory;
-}
-    
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(
-      SessionFactory sessionFactory) {
-   
-       HibernateTransactionManager txManager
-        = new HibernateTransactionManager();
-       txManager.setSessionFactory(sessionFactory);
-  
-       return txManager;
     }
-    
-    
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-       return new PersistenceExceptionTranslationPostProcessor();
+
+    private Properties hibernateProperties() {
+        return new Properties() {
+            {
+                setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+                setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+                setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+                setProperty("hibernate.globally_quoted_identifiers", "true");
+            }
+        };
     }
- 
-    private final Properties hibernateProperties() {
-        Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty(
-          "hibernate.hbm2ddl.auto", "create-drop");
-        hibernateProperties.setProperty(
-          "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
- 
-        return hibernateProperties;
-    }
-    
 }
