@@ -4,6 +4,7 @@ package com.excilys.formation.cdb.model;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,12 +28,15 @@ public class Computer {
     @NotNull
     @Size(min=2, max=60)
     @Pattern(regexp="^[\\wÀ-ÿ]+[\\wÀ-ÿ_\\-'\\+\\*. ]+$")
+    @Column(name = "name")
     private String name;
     
     @Pattern(regexp="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))")
+    @Column(name = "introduced")
     private LocalDate introduced;
     
     @Pattern(regexp="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))")
+    @Column(name = "discontinued")
     private LocalDate discontinued;
     
     @ManyToOne(optional = true)

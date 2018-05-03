@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.config;
+package com.excilys.formation.cdb.webConfig;
 
 import java.util.Properties;
 
@@ -24,8 +24,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 @PropertySource(value = "classpath:db.properties")
-@ComponentScan(basePackages = "com.excilys.formation.cdb")
-
+@ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.persistence",
+        "com.excilys.formation.cdb.service",
+        "com.excilys.formation.cdb.mapper",
+        "com.excilys.formation.cdb.config",
+        "com.excilys.formation.cdb.controller",
+        "com.excilys.formation.cdb.webConfig"
+})
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Resource

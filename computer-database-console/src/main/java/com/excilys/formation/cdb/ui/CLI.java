@@ -27,10 +27,9 @@ public class CLI {
 
 	public static void main(String[] args){
 
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(Config.class);
-		context.refresh();
-		context.getBean(CLI.class).start();
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+		CLI cli  = context.getBean(CLI.class);
+		cli.start();
 		context.close();	  
 	}
 

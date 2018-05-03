@@ -1,4 +1,4 @@
-package com.excilys.formation.cdb.config;
+package com.excilys.formation.cdb.webConfig;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -6,12 +6,12 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {WebConfiguration.class};
+        return new Class[] {WebSecurityConfiguration.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {WebConfiguration.class};
+        return new Class[] {WebSecurityConfiguration.class};
     }
 
     @Override

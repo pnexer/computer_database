@@ -13,11 +13,14 @@ import com.excilys.formation.cdb.persistence.ComputerDAO;
 @Component
 public class Validator {
 	
-	@Autowired
-	private CompanyDAO companyDAO ;
+	private CompanyDAO companyDAO ;	
+	private ComputerDAO computerDAO;
 	
 	@Autowired
-	private ComputerDAO computerDAO;
+	public Validator(CompanyDAO companyDAO,ComputerDAO computerDAO) {
+		this.companyDAO = companyDAO;
+		this.computerDAO = computerDAO;
+	}
 
     protected Computer computerExistValidation(int id) throws Exception {
     	
