@@ -19,7 +19,6 @@ import com.excilys.formation.cdb.service.ComputerService;
 import com.excilys.formation.cdb.service.ComputerPage;
 
 @Controller
-@RequestMapping("/computer")
 public class GlobalController {
 	
 	private ComputerService computerService;

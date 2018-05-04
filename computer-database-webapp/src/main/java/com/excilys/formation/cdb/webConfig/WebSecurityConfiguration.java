@@ -6,20 +6,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
 import com.excilys.formation.cdb.service.UserService;
 
 @Configuration
 @EnableWebMvc
 @EnableWebSecurity
-@ComponentScan("com.excilys.formation.cdb")
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@ComponentScan(basePackages = {
+        "com.excilys.formation.cdb.persistence",
+        "com.excilys.formation.cdb.service",
+        "com.excilys.formation.cdb.mapper",
+        "com.excilys.formation.cdb.config",
+        "com.excilys.formation.cdb.controller",
+        "com.excilys.formation.cdb.webConfig"
+})@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     private UserDetailsService userDetailsService;
@@ -40,6 +46,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder(11);
     }
+  
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/static/**"); 
+}
     
 
     @Override
@@ -57,7 +68,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout()
                 .logoutUrl("/login/logout")
                 .logoutSuccessUrl("/login/login")
-                .invalidateHttpSession(true)
                 .and()
             .exceptionHandling()
                 .accessDeniedPage("login/403");

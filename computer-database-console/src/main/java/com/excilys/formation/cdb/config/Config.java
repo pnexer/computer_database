@@ -19,14 +19,9 @@ import com.excilys.formation.cdb.model.Company;
 
 @Configuration
 @PropertySource(value = "classpath:db.properties")
-@ComponentScan(basePackages = {
-        "com.excilys.formation.cdb.persistence",
-        "com.excilys.formation.cdb.service",
-        "com.excilys.formation.cdb.mapper",
-        "com.excilys.formation.cdb.config",
-        "com.excilys.formation.cdb.controller",
-        "com.excilys.formation.cdb.config"
-})public class Config {
+@ComponentScan(basePackages = {"com.excilys.formation.cdb",})
+
+public class Config {
 
     @Resource
     private Environment environment;

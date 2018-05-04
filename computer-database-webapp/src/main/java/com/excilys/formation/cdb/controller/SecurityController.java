@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.excilys.formation.cdb.model.User;
  
 @Controller
-@RequestMapping("/login")
 public class SecurityController {
 
     @GetMapping("/login")
