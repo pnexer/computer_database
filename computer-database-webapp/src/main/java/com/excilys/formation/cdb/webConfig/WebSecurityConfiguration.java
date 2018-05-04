@@ -18,14 +18,8 @@ import com.excilys.formation.cdb.service.UserService;
 @Configuration
 @EnableWebMvc
 @EnableWebSecurity
-@ComponentScan(basePackages = {
-        "com.excilys.formation.cdb.persistence",
-        "com.excilys.formation.cdb.service",
-        "com.excilys.formation.cdb.mapper",
-        "com.excilys.formation.cdb.config",
-        "com.excilys.formation.cdb.controller",
-        "com.excilys.formation.cdb.webConfig"
-})@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@ComponentScan(basePackages = {"com.excilys.formation.cdb",})
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     private UserDetailsService userDetailsService;
