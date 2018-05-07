@@ -50,6 +50,7 @@
 		<hibernate.version>5.2.16.Final</hibernate.version>
 		<javassit.version>3.18.2-GA</javassit.version>
 		<security.version>5.0.4.RELEASE</security.version>
+		<jackson.version>2.9.5</jackson.version>
 
 	</properties>
 	<build>
@@ -140,6 +141,7 @@
 		<module>computer-database-core</module>
 		<module>computer-database-webapp</module>
 
+		<module>computer-database-webService</module>
 	</modules>
 
 	<dependencyManagement>
@@ -149,6 +151,17 @@
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 			<!-- logging -->
 			<dependency>
@@ -292,7 +305,7 @@
 				<artifactId>spring-security-config</artifactId>
 				<version>${security.version}</version>
 				<scope>runtime</scope>
-</dependency>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
