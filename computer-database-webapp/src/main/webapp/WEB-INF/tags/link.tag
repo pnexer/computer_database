@@ -32,7 +32,9 @@
     <c:when test="${target == 'size'}">
     	<c:url value="/computer/dashboard?size=${size}&search=${search}&sort=${colum_name}&asc=${asc}"/>
     </c:when>
-
+    <c:when test="${target == 'sortBy'}">
+    	<c:url value="/computer/dashboard?size=${size}&search=${search}&sort=${colum_name}&asc=${asc}"/>
+    </c:when>
     <c:when test="${target == 'search'}">
     	<c:url value="/computer/dashboard?size=${size}&search=${search}&sort=${colum_name}&asc=${asc}"/>
     </c:when>

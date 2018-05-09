@@ -1,14 +1,22 @@
 package com.excilys.formation.cdb.dto;
 
-import com.excilys.formation.cdb.dto.ComputerDTO.ComputerDTOBuilder;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 
 public class ComputerDTO {
+    
     private int id;
+    @NotNull
+    @Size(min=1, max=30)
+    @Pattern(regexp="^[\\wÀ-ÿ]+[\\wÀ-ÿ_\\-'\\+\\.\\* ]+$")
     private String name;
+    @Pattern(regexp="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))")
     private String dateIntroduced;
+    @Pattern(regexp="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))")
     private String dateDiscontinued;
-    private CompanyDTO companyDTO;
-
+    private CompanyDTO manufactor;
     
     public ComputerDTO() { };
 
@@ -17,22 +25,8 @@ public class ComputerDTO {
         this.name = builder.name;
         this.dateIntroduced = builder.dateIntroduced;
         this.dateDiscontinued = builder.dateDiscontinued;
-        this.companyDTO = builder.companyDTO;
-
-
+        this.manufactor = builder.manufactor;
     }
-    
-    @Override
-    public String toString() {
-        String res = "";
-        res += "id= " + this.id;
-        res += " | nom: " + this.name;
-        res += " | dateIntro: " + this.dateIntroduced;
-        res += " | dateDisco: " + this.dateDiscontinued;
-        res += " | manufactor: " + this.companyDTO + "}";
-        return res;
-    }
-
 
     public int getId() {
         return id;
@@ -66,24 +60,31 @@ public class ComputerDTO {
         this.dateDiscontinued = dateDiscontinued;
     }
 
-    public CompanyDTO getCompanyDTO() {
-		return companyDTO;
-	}
+    public CompanyDTO getManufactor() {
+        return manufactor;
+    }
 
-	public void setCompanyDTO(CompanyDTO companyDTO) {
-		this.companyDTO = companyDTO;
-	}
+    public void setManufactor(CompanyDTO manufactor) {
+        this.manufactor = manufactor;
+    }
 
+    @Override
+    public String toString() {
+        String result = "";
+        result += "id: " + this.id;
+        result += " {nom: " + this.name;
+        result += ", date1: " + this.dateIntroduced;
+        result += ", date2: " + this.dateDiscontinued;
+        result += ", manufactor: " + this.manufactor.getName() + "}\n";
+        return result;
+    }
 
-
-	public static class ComputerDTOBuilder {
+    public static class ComputerDTOBuilder {
         private int id;
         private final String name;
         private String dateIntroduced;
         private String dateDiscontinued;
-        private CompanyDTO companyDTO;
-
-    
+        private CompanyDTO manufactor;
 
         public ComputerDTOBuilder(String name) {
             this.name = name;
@@ -104,8 +105,8 @@ public class ComputerDTO {
             return this;
         }
 
-        public ComputerDTOBuilder companyDTO(CompanyDTO companyDTO) {
-            this.companyDTO = companyDTO;
+        public ComputerDTOBuilder manufactor(CompanyDTO manufactor) {
+            this.manufactor = manufactor;
             return this;
         }
 

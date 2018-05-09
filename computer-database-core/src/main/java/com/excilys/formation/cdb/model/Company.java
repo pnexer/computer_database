@@ -1,50 +1,50 @@
 package com.excilys.formation.cdb.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "company")
+@Table(name="company")
 public class Company {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue
+    @Column(name="id")
+    private int id;
+    @Column(name="name")
+    private String name;
 
-	@Column(name = "name")
-	private String name;
+    public Company() {}
 
-	public Company() {
-		super();
-		name = "";
-		id = null;
-	}
+    public Company(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-	public Company(int id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		String res = "";
-		res += " id= " + this.id;
-		res += "| nom = " + this.name;
-		return res;
-	}
+    @Override
+    public String toString() {
+        String result = "";
+        result += "id: " + this.id;
+        result += " {nom: " + this.name + "}";
+        return result;
+    }
 }

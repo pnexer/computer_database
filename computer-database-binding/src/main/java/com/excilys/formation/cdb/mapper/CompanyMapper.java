@@ -11,22 +11,22 @@ import com.excilys.formation.cdb.model.Company;
 
 @Component
 public class CompanyMapper {
-    
 
-    public Company resultSetToCompany(ResultSet resultSet) throws SQLException {
-    	
-        int id = resultSet.getInt("caId");
-        String name = resultSet.getString("caName");
-        Company company = new Company(id, name);
-        return company;
+    public Company resToCompany(ResultSet resultSet) throws SQLException {
+        int idCompany = resultSet.getInt("caId");
+        String nameCompany = resultSet.getString("caName");
+        return new Company(idCompany, nameCompany);
+    }
+
+    public CompanyDTO companyToDTO(Optional<Company> company) {
+        return company.isPresent() ? new CompanyDTO(company.get().getId(), company.get().getName()) : null;
+    }
+
+    public CompanyDTO companyToDTO(Company company) {
+        return new CompanyDTO(company.getId(), company.getName());
     }
     
     public Company dtoToCompany(CompanyDTO companyDTO) {
         return companyDTO.getId() > 0 ? new Company(companyDTO.getId(), companyDTO.getName()) : null;
     }
-    
-    public CompanyDTO companyToCompanyDTO(Optional<Company> company) {
-        return company.isPresent() ? new CompanyDTO(company.get().getId(), company.get().getName()) : null;
-    }
-
 }

@@ -15,61 +15,51 @@ import com.excilys.formation.cdb.model.Computer;
 
 @Component
 public class ComputerMapper {
-	
-	@Autowired
-	private  CompanyMapper companyMapper = new CompanyMapper();
 
-    public Computer resultSetToComputer(ResultSet resultSet) throws SQLException {
- 	
-    	int id = resultSet.getInt("cuId");
-        String name = resultSet.getString("cuName");
-        Date DateIntro = resultSet.getDate("introduced");
-        Date DateDisco = resultSet.getDate("discontinued");       
-        LocalDate introducedComputer = DateIntro == null ? null : resultSet.getDate("introduced").toLocalDate();
-        LocalDate discontinuedComputer = DateDisco == null ? null : resultSet.getDate("discontinued").toLocalDate();     
-        Company manufactor = companyMapper.resultSetToCompany(resultSet);
-      
-        return new Computer(id,name,introducedComputer,discontinuedComputer,manufactor);
-                          
+    @Autowired
+    private CompanyMapper companyMapper;
+
+    public Computer resToComputer(ResultSet resultSet) throws SQLException {
+        int idComputer = resultSet.getInt("cuId");
+        String nameComputer = resultSet.getString("cuName");
+        Date intro = resultSet.getDate("introduced");
+        Date disco = resultSet.getDate("discontinued");
+        LocalDate introducedComputer = Optional.ofNullable(intro).isPresent() ? resultSet.getDate("introduced").toLocalDate() : null;
+        LocalDate discontinuedComputer = Optional.ofNullable(disco).isPresent() ? resultSet.getDate("discontinued").toLocalDate() : null;
+        Company manufactor = companyMapper.resToCompany(resultSet);
+        return new Computer.ComputerBuilder(nameComputer)
+                            .id(idComputer)
+                            .dateIntroduced(introducedComputer)
+                            .dateDiscontinued(discontinuedComputer)
+                            .manufactor(manufactor)
+                            .build();
     }
-
-
-    public ComputerDTO computerToComputerDTO(Computer computer) {
-    	
+    
+    public ComputerDTO computerToDTO(Computer computer) {
         return new ComputerDTO.ComputerDTOBuilder(computer.getName())
                                 .id(computer.getId())
-                                .dateIntroduced(optionalDateToString(computer.getIntroduced()))
-                                .dateDiscontinued(optionalDateToString(computer.getDiscontinued()))
-                                .companyDTO(companyMapper.companyToCompanyDTO(computer.getCompany()))
+                                .dateIntroduced(optionalDateToString(computer.getDateIntroduced()))
+                                .dateDiscontinued(optionalDateToString(computer.getDateDiscontinued()))
+                                .manufactor(companyMapper.companyToDTO(computer.getManufactor()))
                                 .build();
     }
-    
-    public Computer dtoToComputer(ComputerDTO computerDTO) {
-        return new Computer(computerDTO.getId(),computerDTO.getName(),stringToLocalDate(computerDTO.getDateIntroduced()),stringToLocalDate(computerDTO.getDateDiscontinued()),companyMapper.dtoToCompany((computerDTO.getCompanyDTO())));
-                      
-    }
-    
-  
 
-   
-    private LocalDate stringToLocalDate(String stringDate) {
-        return Optional.ofNullable(stringDate).isPresent() && !stringDate.isEmpty() ? LocalDate.parse(stringDate) : null;
+
+    public Computer dtoToComputer(ComputerDTO computerDTO) {
+        return new Computer.ComputerBuilder(computerDTO.getName())
+                            .id(computerDTO.getId())
+                            .dateIntroduced(stringToLocalDate(computerDTO.getDateIntroduced()))
+                            .dateDiscontinued(stringToLocalDate(computerDTO.getDateDiscontinued()))
+                            .manufactor(companyMapper.dtoToCompany((computerDTO.getManufactor())))
+                            .build();
     }
+
 
     private String optionalDateToString(Optional<LocalDate> date) {
-        if (date.isPresent()) {
-            return date.get().toString();
-        } else {
-            return "";
-        }
+        return date.isPresent() ? date.get().toString() : "";
     }
 
- 
-    private String optionalCompanyToString(Optional<Company> company) {
-        if (company.isPresent()) {
-            return company.get().getName();
-        } else {
-            return "";
-        }
+    private LocalDate stringToLocalDate(String stringDate) {
+        return Optional.ofNullable(stringDate).isPresent() && !stringDate.isEmpty() ? LocalDate.parse(stringDate) : null;
     }
 }

@@ -1,18 +1,18 @@
 package com.excilys.formation.cdb.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class CompanyDTO {
     private int id;
+    @NotNull
+    @Size(min=1, max=30)
+    @Pattern(regexp="^[\\wÀ-ÿ]+[\\wÀ-ÿ_\\-'\\+\\.\\* ]+$")
     private String name;
 
-    @Override
-    public String toString() {
-        String res = "";
-        res += " id= " + this.id;
-        res += "| nom= " + this.name;
-        return res;
-    }
-    
+    public CompanyDTO() {}
+
     public CompanyDTO(int id, String name) {
         this.id = id;
         this.name = name;
@@ -34,5 +34,11 @@ public class CompanyDTO {
         this.name = name;
     }
 
-
+    @Override
+    public String toString() {
+        String result = "";
+        result += "id: " + this.id;
+        result += " {nom: " + this.name + "}";
+        return result;
+    }
 }

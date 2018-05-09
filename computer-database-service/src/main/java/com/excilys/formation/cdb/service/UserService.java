@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.excilys.formation.cdb.model.User;
-import com.excilys.formation.cdb.persistence.UserDAO;
+import com.excilys.formation.cdb.persistence.dao.UserDAO;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -20,8 +20,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String name) throws UsernameNotFoundException {
-        if(userDAO.selectUser(name).isPresent()) {
-            return userDAO.selectUser(name).get();
+        if(userDAO.selectUserTest(name).isPresent()) {
+            return userDAO.selectUserTest(name).get();
         } else {
             throw new UsernameNotFoundException("Username not found !");
         }
